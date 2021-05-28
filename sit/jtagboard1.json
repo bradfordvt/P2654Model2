@@ -1,0 +1,214 @@
+{
+  "ROOT" : {
+    "name": "JTAGBoard1",
+    "hproto": "JTAG",
+    "transform": "JTAGBoard1",
+    "visible": false,
+    "children": [
+      {
+        "CONTROLLER": {
+          "name": "JTAGControllerAssembly",
+          "hproto": "JTAG",
+          "transform": "JTAGControllerAssembly",
+          "visible": false,
+          "children": [
+            {
+              "CHAIN": {
+                "name": "JTAGChain",
+                "transform": "JTAGChain",
+                "inject": "",
+                "injectors": [
+                ],
+                "visible": true,
+                "children": [
+                  {
+                    "LINKER": {
+                      "name": "U1",
+                      "transform": "TAPTransform",
+                      "visible": true,
+                      "selector": {
+                        "Custom": "TAPSelector"
+                      },
+                      "control": [],
+                      "derivations": 2,
+                      "children": [
+                        {
+                          "REGISTER": {
+                            "name": "IR",
+                            "size": 8,
+                            "safe": "0xFF",
+                            "transform": "TDRTransform",
+                            "inject": "TDRInject",
+                            "injectors": [
+                              {
+                                "TDRio": "size=8 safe=0xFF"
+                              }
+                            ],
+                            "sticky": false,
+                            "visible": true
+                          },
+                          "LINKER": {
+                            "name": "ScanMux",
+                            "transform": "TAPMux",
+                            "visible": false,
+                            "selector": {
+                              "Table": [
+                                {
+                                  "0xFF": "BYPASS",
+                                  "0x00": "BSR",
+                                  "0x02": "BSR",
+                                  "0x03": "IDCODE",
+                                  "0x09": "MBIST",
+                                  "0x08": "DEBUG",
+                                  "0x05": "IRCAPTURE"
+                                }
+                              ]
+                            },
+                            "control": [
+                              "JTAGBoard1.JTAGChain.U1.IR"
+                            ],
+                            "derivations": 2,
+                            "children": [
+                              {
+                                "REGISTER": {
+                                  "name": "BYPASS",
+                                  "cproto": "JTAG",
+                                  "size": 1,
+                                  "safe": "0",
+                                  "transform": "TDRTransform",
+                                  "inject": "TDRInject",
+                                  "injectors": [
+                                    {
+                                      "TDRio": "size=1 safe=0"
+                                    }
+                                  ],
+                                  "sticky": false,
+                                  "visible": true
+                                }
+                              },
+                              {
+                                "REGISTER": {
+                                  "name": "BSR",
+                                  "cproto": "JTAG",
+                                  "size": 18,
+                                  "safe": "0x3FFFF",
+                                  "transform": "TDRTransform",
+                                  "inject": "TDRInject",
+                                  "injectors": [
+                                    {
+                                      "TDRio": "size=18 safe=0x3FFFF"
+                                    }
+                                  ],
+                                  "sticky": true,
+                                  "visible": true
+                                }
+                              },
+                              {
+                                "REGISTER": {
+                                  "name": "IDCODE",
+                                  "cproto": "JTAG",
+                                  "size": 32,
+                                  "safe": "0x149511c3",
+                                  "transform": "TDRTransform",
+                                  "inject": "TDRInject",
+                                  "injectors": [
+                                    {
+                                      "TDRio": "size=32 safe=0x149511c3"
+                                    }
+                                  ],
+                                  "sticky": true,
+                                  "visible": true
+                                }
+                              },
+                              {
+                                "REGISTER": {
+                                  "name": "IRCAPTURE",
+                                  "cproto": "JTAG",
+                                  "size": 8,
+                                  "safe": "0x05",
+                                  "transform": "TDRTransform",
+                                  "inject": "TDRInject",
+                                  "injectors": [
+                                    {
+                                      "TDRio": "size=8 safe=0x05"
+                                    }
+                                  ],
+                                  "sticky": true,
+                                  "visible": true
+                                }
+                              },
+                              {
+                                "REGISTER": {
+                                  "name": "MBIST",
+                                  "cproto": "JTAG",
+                                  "size": 32,
+                                  "safe": "0xFFFFFFFF",
+                                  "transform": "TDRTransform",
+                                  "inject": "TDRInject",
+                                  "injectors": [
+                                    {
+                                      "TDRio": "size=32 safe=0xFFFFFFFF"
+                                    }
+                                  ],
+                                  "sticky": true,
+                                  "visible": true
+                                }
+                              },
+                              {
+                                "REGISTER": {
+                                  "name": "DEBUG",
+                                  "cproto": "JTAG",
+                                  "size": 32,
+                                  "safe": "0xFFFFFFFF",
+                                  "transform": "TDRTransform",
+                                  "inject": "TDRInject",
+                                  "injectors": [
+                                    {
+                                      "TDRio": "size=32 safe=0xFFFFFFFF"
+                                    }
+                                  ],
+                                  "sticky": true,
+                                  "visible": true
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "CONTROLLER": {
+          "name": "GPIOController",
+          "hproto": "GPIO",
+          "transform": "GPIOControllerAssembly",
+          "visible": false,
+          "children": [
+            {
+              "REGISTER": {
+                "name": "GPIO1",
+                "size": 32,
+                "safe": "0",
+                "transform": "GPIOTransform",
+                "inject": "GPIOInject",
+                "injectors": [
+                  {
+                    "GPio": "size=32 safe=0"
+                  }
+                ],
+                "sticky": false,
+                "visible": true
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
