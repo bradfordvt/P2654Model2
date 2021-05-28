@@ -1,0 +1,42 @@
+syntax = "proto3";
+package commands;
+
+enum StableState {
+  NOP1_STABLE = 0;
+  NOP2_STABLE = 2;
+  NOP4_STABLE = 6;
+}
+
+message WRITE {
+  uint32 IID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 value= 3;
+}
+
+message READ {
+  uint32 IID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 value= 3;
+}
+
+message GET {
+  uint32 IID = 1;
+  uint32 nrbits = 2;
+}
+
+message APPLY {
+  uint32 IID = 1;
+  uint32 nrbits = 2;
+}
+
+message SHIFT {
+  uint32 IID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 si_vector = 3;
+  repeated uint32 so_vector = 4;
+}
+
+message ENDSTATE {
+  uint32 IID = 1;
+  StableState state = 2;
+}

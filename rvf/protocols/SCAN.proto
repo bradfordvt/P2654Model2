@@ -1,0 +1,68 @@
+syntax = "proto3";
+package protocols;
+
+enum SCANClock {
+  TCK = 0;
+  SCK = 1;
+}
+
+enum SCANState {
+  NOP1 = 0;
+  PIO = 1;
+  NOP2 = 2;
+  CAPTURE = 3;
+  NOP3 = 4;
+  SHIFT = 5;
+  NOP4 = 6;
+  UPDATE = 7;
+  NOP5 = 8;
+}
+
+enum SCANStableState {
+  NOP1_STABLE = 0;
+  NOP2_STABLE = 2;
+  NOP4_STABLE = 6;
+}
+
+message SU {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 si_vector = 3;
+}
+
+message CS {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 so_vector = 3;
+}
+
+message CSU {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 si_vector = 3;
+  repeated uint32 so_vector = 4;
+}
+
+message S {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 si_vector = 3;
+  repeated uint32 so_vector = 4;
+}
+
+message RUNLOOP {
+  uint32 UID = 1;
+  uint32 cycle_count = 2;
+  SCANClock run_clk = 4;
+  string min_time = 5;
+}
+
+message RESET {
+  uint32 UID = 1;
+}
+
+message ENDSTATE {
+  uint32 UID = 1;
+  SCANStableState state = 2;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package IntBV;
+
+message ipint {
+  bool pos = 1;
+  uint32 bits = 2;
+  repeated uint32  val = 3;
+}
+
+message IntBV {
+  ipint min = 1;
+  ipint max = 2;
+  ipint val = 3;
+  uint32 nrbits = 4;
+}

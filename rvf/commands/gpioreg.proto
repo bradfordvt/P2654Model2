@@ -1,0 +1,12 @@
+syntax = "proto3";
+package commands;
+
+message OUTPUT {
+  uint32 IID = 1;
+  uint32 value = 2;
+}
+
+message INPUT {
+  uint32 IID = 1;
+  uint32 value = 2;
+}

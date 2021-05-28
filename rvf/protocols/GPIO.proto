@@ -1,0 +1,12 @@
+syntax = "proto3";
+package protocols;
+
+message INPUT {
+  uint32 UID = 1;
+  uint32 value = 2;
+}
+
+message OUTPUT {
+  uint32 UID = 1;
+  uint32 value = 2;
+}

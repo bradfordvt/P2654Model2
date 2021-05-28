@@ -1,0 +1,81 @@
+syntax = "proto3";
+package protocols;
+
+enum SVFState {
+  TLR = 0;
+  IDLE = 1;
+  DRSELECT = 2;
+  DRCAPTURE = 3;
+  DRSHIFT = 4;
+  DREXIT1 = 5;
+  DRPAUSE = 6;
+  DREXIT2 = 7;
+  DRUPDATE = 8;
+  IRSELECT = 9;
+  IRCAPTURE = 10;
+  IRSHIFT = 11;
+  IREXIT1 = 12;
+  IRPAUSE = 13;
+  IREXIT2 = 14;
+  IRUPDATE = 15;
+}
+
+enum SVFStableState {
+  TLR_STABLE = 0;
+  IDLE_STABLE = 1;
+  DRPAUSE_STABLE = 6;
+  IRPAUSE_STABLE = 13;
+}
+
+message ENDDR {
+  uint32 UID = 1;
+  SVFStableState state = 2;
+}
+
+message ENDIR {
+  uint32 UID = 1;
+  SVFStableState state = 2;
+}
+
+message SDR {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 tdi = 3;
+  repeated uint32 tdo = 4;
+  repeated uint32 mask = 5;
+}
+
+
+message SIR {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 tdi = 3;
+  repeated uint32 tdo = 4;
+  repeated uint32 mask = 5;
+}
+
+message RUNTEST {
+  uint32 UID = 1;
+  SVFStableState run_state = 2;
+  uint32 run_count = 3;
+  string run_clk = 4;
+  string min_time = 5;
+  string max_time = 6;
+  SVFStableState end_state = 7;
+}
+
+message TRST {
+  uint32 UID = 1;
+  bool state = 2;
+}
+
+message STATE {
+  uint32 UID = 1;
+  repeated SVFState state = 2;
+  SVFStableState end_state = 3;
+}
+
+message FREQUENCY {
+  uint32 UID = 1;
+  string cycles = 2;
+}

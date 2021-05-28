@@ -1,0 +1,37 @@
+syntax = "proto3";
+package RVF;
+
+message SU {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 si_vector = 3;
+}
+
+message CS {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 so_vector = 3;
+}
+
+message CSU {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 si_vector = 3;
+  repeated uint32 so_vector = 4;
+}
+
+message S {
+  uint32 UID = 1;
+  uint32 nrbits = 2;
+  repeated uint32 si_vector = 3;
+  repeated uint32 so_vector = 4;
+}
+
+message RUNTEST {
+  uint32 UID = 1;
+  uint32 clocks = 2;
+}
+
+message RESET {
+  uint32 UID = 1;
+}

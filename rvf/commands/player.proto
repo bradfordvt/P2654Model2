@@ -1,0 +1,9 @@
+syntax = "proto3";
+package commands;
+
+message PLAY {
+  uint32 UID = 1;
+  string input_file = 2;
+  string output_file = 3;
+  string parameters = 4;
+}

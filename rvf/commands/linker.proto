@@ -1,0 +1,17 @@
+syntax = "proto3";
+package commands;
+
+message SELECT {
+  uint32 UID = 1;
+  uint32 derivation = 2;
+}
+
+message DESELECT {
+  uint32 UID = 1;
+  uint32 derivation = 2;
+}
+
+message ISACTIVE {
+  uint32 UID = 1;
+  uint32 derivation = 2;
+}

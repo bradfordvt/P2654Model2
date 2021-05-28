@@ -1,0 +1,48 @@
+syntax = "proto3";
+package RVF;
+
+enum RVFType {
+  ERROR = 0;
+  STATUS = 1;
+  REQUEST = 2;
+  RESPONSE = 3;
+  WRAPPER = 4;
+}
+
+  message RVFMessage {
+  uint32 UID = 1;
+  RVFType rvf_type = 2;
+  string metaname = 3;
+  bytes serialized = 4;
+}
+
+  message RVFCommand {
+  uint32 IID = 1;
+  RVFType rvf_type = 2;
+  string metaname = 3;
+  bytes serialized = 4;
+}
+
+message RVFError {
+  uint32 UID = 1;
+  RVFType rvf_type = 2;
+  string message = 3;
+  uint32 code = 4;
+}
+
+message RVFStatus {
+  uint32 UID = 1;
+  RVFType rvf_type = 2;
+  string message = 3;
+  uint32 code = 4;
+}
+
+message RVFDataValue {
+  uint32 UID = 1;
+  repeated uint32 data = 2;
+}
+
+message RVFSelectEvent {
+  string path = 1;
+  repeated uint32 data = 2;
+}
