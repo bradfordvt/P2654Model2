@@ -1,0 +1,42 @@
+{
+    "searchpaths" : [
+        {"path" : "C:\\Users\\Bradford Van Treuren\\PycharmProjects\\P2654Model2"},
+        {"path" : "C:\\Users\\Bradford Van Treuren\\PycharmProjects\\P2654Simulations"}
+    ],
+    "strategies" : [
+        {
+            "module" : "p2654model2.strategy.transform.strategies.JTAGChain",
+            "class" : "JTAGChain" },
+        {
+            "module" : "p2654model2.strategy.transform.strategies.TAPMux",
+            "class" : "TAPMux" },
+        {
+            "module" : "p2654model2.strategy.transform.strategies.TAPTransform",
+            "class" : "TAPTransform" },
+        {
+            "module" : "p2654model2.strategy.transform.strategies.TDRTransform",
+            "class" : "TDRTransform" },
+        {
+            "module" : "p2654model2.strategy.transform.strategies.GPIOTransform",
+            "class" : "GPIOTransform" },
+        {
+            "module" : "p2654model2.strategy.inject.strategies.JTAGInject",
+            "class" : "JTAGInject" },
+        {
+            "module" : "p2654model2.strategy.inject.strategies.TDRInject",
+            "class" : "TDRInject" },
+        {
+            "module" : "p2654model2.strategy.inject.strategies.GPIOInject",
+            "class" : "GPIOInject" }
+    ],
+    "injectors" : [
+        {
+            "module" : "p2654model2.injectors.TDRio",
+            "class" : "TDRio" },
+        {
+            "module" : "p2654model2.injectors.GPio",
+            "class" : "GPio" }
+    ],
+    "debuggers" : [
+    ]
+}

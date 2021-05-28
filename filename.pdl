@@ -1,0 +1,49 @@
+iProc foo { } {
+    iWrite JTAGBoard1.GPIO1 0x00AA
+    iApply
+    iRead JTAGBoard1.GPIO1
+    iApply
+    set val [expr {iGetReadData JTAGBoard1.GPIO1 -hex;}]
+    set inp [string range $val 2 3]
+    if { $inp == "AA" } {
+        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Correctly read input value"
+    } else {
+        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Failed to read input"
+    }
+    iWrite JTAGBoard1.JTAGChain.U1.IR 0xFF
+    iRead JTAGBoard1.JTAGChain.U1.IR
+    iApply
+    set val [expr {iGetReadData JTAGBoard1.JTAGChain.U1.IR -hex;}]
+    set inp [string equal -nocase $val "05"]
+    if { $inp == 0 } {
+        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Correctly read Capture IR value"
+    } else {
+        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Failed to read Capture IR"
+    }
+    iWrite JTAGBoard1.JTAGChain.U1.IR 0x02
+    iApply
+    iWrite JTAGBoard1.JTAGChain.U1.BSR 0x00AAAA
+    iRead JTAGBoard1.JTAGChain.U1.BSR
+    iApply
+    set val [expr {iGetReadData JTAGBoard1.JTAGChain.U1.BSR -hex;}]
+    puts -nonewline "***************************************************"
+    puts $val
+    iRead JTAGBoard1.GPIO1
+    iApply
+    set val [expr {iGetReadData JTAGBoard1.GPIO1 -hex;}]
+    puts -nonewline "==================================================="
+    puts $val
+    iWrite JTAGBoard1.JTAGChain.U1.IR 0x00
+    iApply
+    iWrite JTAGBoard1.JTAGChain.U1.BSR 0x00AAAA
+    iRead JTAGBoard1.JTAGChain.U1.BSR
+    iApply
+    set val [expr {iGetReadData JTAGBoard1.JTAGChain.U1.BSR -hex;}]
+    puts -nonewline "***************************************************"
+    puts $val
+    iRead JTAGBoard1.GPIO1
+    iApply
+    set val [expr {iGetReadData JTAGBoard1.GPIO1 -hex;}]
+    puts -nonewline "==================================================="
+    puts $val
+}
