@@ -36,7 +36,6 @@ from enum import Enum
 from p2654model2.builder.moduleloader import ModuleLoader
 from p2654model2.builder.nodecontainer import NodeContainer
 from p2654model2.error.ModelError import ModelError
-from p2654model2.scheduler.scheduler import SchedulerFactory
 from p2654model2.strategy.inject.injectionstrategy import InjectionStrategy
 from p2654model2.strategy.transform.transformstrategy import TransformStrategy
 import p2654model2.rvf.rvfmessage_pb2
@@ -145,7 +144,6 @@ class TransformEngine(object):
             raise ModelError("transform_strategy not registered for {:s}.".format(self.name))
         else:
             self.__flow = TransformEngine.Flow.TRANSFORM
-            SchedulerFactory.get_scheduler().mark_pending()
             ret = self.__transform_strategy.handleRequest(message)
             if ret is not None:
                 rvf = self.__transform_strategy.getStatus()
@@ -160,17 +158,14 @@ class TransformEngine(object):
                     if self.__status == "OK":
                         return True
                     else:
-                        SchedulerFactory.get_scheduler().clear_pending()
                         return False
             else:
                 rvf = self.__transform_strategy.getError()
                 if rvf is not None:
                     # rvf is a p2654model2.rvf.protocols.RVFMessage_pb2.ERROR()
                     self.__error = rvf.message
-                    SchedulerFactory.get_scheduler().clear_pending()
                     return False
                 else:
-                    SchedulerFactory.get_scheduler().clear_pending()
                     return None
 
     def handleInjectionRequest(self, message):
@@ -178,7 +173,6 @@ class TransformEngine(object):
         if self.__injection_strategy is None:
             raise ModelError("injection_strategy not registered for {:s}.".format(self.name))
         else:
-            SchedulerFactory.get_scheduler().mark_pending()
             self.__flow = TransformEngine.Flow.INJECTION
             ret = self.__injection_strategy.handleRequest(message)
             if ret is not None:
@@ -189,86 +183,70 @@ class TransformEngine(object):
                     if self.__status == "OK":
                         return True
                     else:
-                        SchedulerFactory.get_scheduler().clear_pending()
                         return False
                 else:
                     rvf = self.__injection_strategy.getError()
                     if rvf is not None:
                         # rvf is a p2654model2.rvf.protocols.RVFMessage_pb2.ERROR()
                         self.__error = rvf.message
-                        SchedulerFactory.get_scheduler().clear_pending()
                         return False
                     else:
-                        SchedulerFactory.get_scheduler().clear_pending()
                         return None
             else:
                 rvf = self.__injection_strategy.getError()
                 if rvf is not None:
                     # rvf is a p2654model2.rvf.protocols.RVFMessage_pb2.ERROR()
                     self.__error = rvf.message
-                    SchedulerFactory.get_scheduler().clear_pending()
                     return False
                 else:
-                    SchedulerFactory.get_scheduler().clear_pending()
                     return None
 
     def handleResponse(self, message):
         self.logger.debug("TransformEngine.handleResponse({:s}): processing {:s} RVF\n".format(self.name, message.metaname))
         if self.__flow == TransformEngine.Flow.TRANSFORM:
             ret = self.__transform_strategy.handleResponse(message)
-            # SchedulerFactory.get_scheduler().clear_pending()
             return ret
         elif self.__flow == TransformEngine.Flow.INJECTION:
             ret = self.__injection_strategy.handleResponse(message)
-            # SchedulerFactory.get_scheduler().clear_pending()
             return ret
 
     def handleUpdateRequest(self, message):
         self.logger.debug("TransformEngine.handleUpdateRequest({:s}): processing {:s} RVF\n".format(self.name, message.metaname))
-        # SchedulerFactory.get_scheduler().mark_pending()
         return self.__transform_strategy.updateRequest(message)
 
     def handleUpdateResponse(self, message):
         self.logger.debug("TransformEngine.handleUpdateResponse({:s}): processing {:s} RVF\n".format(self.name, message.metaname))
         ret = self.__transform_strategy.updateResponse(message)
-        # SchedulerFactory.get_scheduler().clear_pending()
         return ret
 
     def sendRequest(self, message):
         self.logger.debug("TransformEngine.sendRequest({:s}): processing {:s} RVF\n".format(self.name, message.metaname))
         ret = self._client_interface.sendRequest(message)
-        SchedulerFactory.get_scheduler().clear_pending()
         return ret
 
     def sendResponse(self, message):
         self.logger.debug("TransformEngine.sendResponse({:s}): processing {:s} RVF\n".format(self.name, message.metaname))
         if self.__flow == TransformEngine.Flow.TRANSFORM:
             ret = self._host_interface.sendResponse(message)
-            SchedulerFactory.get_scheduler().clear_pending()
             return ret
         elif self.__flow == TransformEngine.Flow.INJECTION:
             ret = self._testinjection_interface.sendResponse(message)
-            SchedulerFactory.get_scheduler().clear_pending()
             return ret
 
     def updateRequest(self, message):
         self.logger.debug("TransformEngine.updateRequest({:s}): processing {:s} RVF\n".format(self.name, message.metaname))
         if self.__node_type == TransformEngine.NodeType.LEAF or self.__node_type == TransformEngine.NodeType.MODELPOINT:
-            # SchedulerFactory.get_scheduler().mark_pending()
             return self.__transform_strategy.updateRequest(message)
         else:
-            # SchedulerFactory.get_scheduler().mark_pending()
             return self._host_interface.updateRequest(message)
 
     def updateResponse(self, message):
         self.logger.debug("TransformEngine.updateResponse({:s}): processing {:s} RVF\n".format(self.name, message.metaname))
         if self.__node_type == TransformEngine.NodeType.LEAF or self.__node_type == TransformEngine.NodeType.MODELPOINT:
             ret = self.__transform_strategy.updateResponse(message)
-            SchedulerFactory.get_scheduler().clear_pending()
             return ret
         else:
             ret = self._host_interface.updateResponse(message)
-            SchedulerFactory.get_scheduler().clear_pending()
             return ret
 
     def updateDataValue(self, message):
