@@ -67,6 +67,7 @@ class TDRTransform(object):
         self.sendObserverCallback = None
         self.si = []
         self.so = []
+        self.nrbits = None
         self.status_message = "OK"
         self.status_code = 0
         self.error_message = "UNKNOWN"
@@ -191,6 +192,7 @@ class TDRTransform(object):
     def __csu_cb(self, node_uid, message):
         self.child_uid = message.UID
         self.si = []
+        self.nrbits = message.nrbits
         for v in message.si_vector:
             self.si.append(v)
         return True
@@ -198,17 +200,20 @@ class TDRTransform(object):
     def __su_cb(self, node_uid, message):
         self.child_uid = message.UID
         self.si = []
+        self.nrbits = message.nrbits
         for v in message.si_vector:
             self.si.append(v)
         return True
 
     def __cs_cb(self, node_uid, message):
         self.child_uid = message.UID
+        self.nrbits = message.nrbits
         return True
 
     def __s_cb(self, node_uid, message):
         self.child_uid = message.UID
         self.si = []
+        self.nrbits = message.nrbits
         for v in message.si_vector:
             self.si.append(v)
         return True
@@ -220,6 +225,7 @@ class TDRTransform(object):
     def __csu_resp_cb(self, node_uid, message):
         self.child_uid = message.UID
         self.so = []
+        self.nrbits = message.nrbits
         for v in message.so_vector:
             self.so.append(v)
         self.__updateDataValue(node_uid)
@@ -228,6 +234,7 @@ class TDRTransform(object):
     def __su_resp_cb(self, node_uid, message):
         self.child_uid = message.UID
         self.so = []
+        self.nrbits = message.nrbits
         for v in message.si_vector:
             self.so.append(v)
         self.__updateDataValue(node_uid)
@@ -236,6 +243,7 @@ class TDRTransform(object):
     def __cs_resp_cb(self, node_uid, message):
         self.child_uid = message.UID
         self.so = []
+        self.nrbits = message.nrbits
         for v in message.so_vector:
             self.so.append(v)
         self.__updateDataValue(node_uid)
@@ -244,6 +252,7 @@ class TDRTransform(object):
     def __s_resp_cb(self, node_uid, message):
         self.child_uid = message.UID
         self.si = []
+        self.nrbits = message.nrbits
         for v in message.si_vector:
             self.si.append(v)
         self.so = []
@@ -278,6 +287,7 @@ class TDRTransform(object):
         self.logger.debug("TDRTransform.__updateDataValue({:s}):\n".format(self.name))
         dvmsg = p2654model2.rvf.rvfmessage_pb2.RVFDataValue()
         dvmsg.UID = node_uid
+        dvmsg.nrbits = self.nrbits
         for v in self.so:
             dvmsg.data.append(v)
         return self.updateDataValueCallback(node_uid, dvmsg)

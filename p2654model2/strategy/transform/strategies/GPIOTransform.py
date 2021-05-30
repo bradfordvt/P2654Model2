@@ -149,7 +149,7 @@ class GPIOTransform(object):
     def __input_cb(self, node_uid, message):
         self.child_uid = message.UID
         self.input = message.value
-        self.__updateDataValue(node_uid)
+        self.__updateDataValue(node_uid, message)
         return True
 
     def __output_cb(self, node_uid, message):
@@ -160,7 +160,7 @@ class GPIOTransform(object):
     def __input_resp_cb(self, node_uid, message):
         self.child_uid = message.UID
         self.input = message.value
-        self.__updateDataValue(node_uid)
+        self.__updateDataValue(node_uid, message)
         return True
 
     def __output_resp_cb(self, node_uid, message):
@@ -186,10 +186,11 @@ class GPIOTransform(object):
         wrapper.serialized = message.SerializeToString()
         return self.sendResponseCallback(node_uid, wrapper)
 
-    def __updateDataValue(self, node_uid):
+    def __updateDataValue(self, node_uid, message):
         self.logger.debug("GPIOTransform.__updateDataValue({:s}):\n".format(self.name))
         dvmsg = p2654model2.rvf.rvfmessage_pb2.RVFDataValue()
         dvmsg.UID = node_uid
+        dvmsg.nrbits = message.nrbits
         dvmsg.data.append(self.input)
         return self.updateDataValueCallback(node_uid, dvmsg)
 

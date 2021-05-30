@@ -393,7 +393,7 @@ class TAPMux(object):
             rvf.nrbits = message.nrbits
             for v in message.so_vector:
                 rvf.so_vector.append(v)
-            self.__updateDataValue(node_uid, message.so_vector)
+            self.__updateDataValue(node_uid, message)
             self.pending = True
             self.data_mode = False
             # self.reqQ.append((node_uid, rvf, "CS"))
@@ -418,7 +418,7 @@ class TAPMux(object):
                 rvf.si_vector.append(v)
             for v in message.so_vector:
                 rvf.so_vector.append(v)
-            self.__updateDataValue(node_uid, message.so_vector)
+            self.__updateDataValue(node_uid, message)
             self.pending = True
             self.data_mode = False
             # self.reqQ.append((node_uid, rvf, "CSU"))
@@ -443,7 +443,7 @@ class TAPMux(object):
                 rvf.si_vector.append(v)
             for v in message.so_vector:
                 rvf.so_vector.append(v)
-            self.__updateDataValue(node_uid, message.so_vector)
+            self.__updateDataValue(node_uid, message)
             self.pending = True
             self.data_mode = False
             # self.reqQ.append((node_uid, rvf, "S"))
@@ -545,7 +545,7 @@ class TAPMux(object):
             rvf.nrbits = message.nrbits
             for v in message.so_vector:
                 rvf.so_vector.append(v)
-            self.__updateDataValue(node_uid, message.so_vector)
+            self.__updateDataValue(node_uid, message)
             # self.respQ.append((node_uid, rvf, "CS", self.child_uid))
             self.respQ.put((node_uid, rvf, "CS", self.child_uid))
         else:
@@ -567,7 +567,7 @@ class TAPMux(object):
                 rvf.si_vector.append(v)
             for v in message.so_vector:
                 rvf.so_vector.append(v)
-            self.__updateDataValue(node_uid, message.so_vector)
+            self.__updateDataValue(node_uid, message)
             # self.respQ.append((node_uid, rvf, "CSU", self.child_uid))
             self.respQ.put((node_uid, rvf, "CSU", self.child_uid))
         else:
@@ -589,7 +589,7 @@ class TAPMux(object):
                 rvf.si_vector.append(v)
             for v in message.so_vector:
                 rvf.so_vector.append(v)
-            self.__updateDataValue(node_uid, message.so_vector)
+            self.__updateDataValue(node_uid, message)
             # self.respQ.append((node_uid, rvf, "S", self.child_uid))
             self.respQ.put((node_uid, rvf, "S", self.child_uid))
         else:
@@ -833,11 +833,12 @@ class TAPMux(object):
         wrapper.serialized = message.SerializeToString()
         return self.sendResponseCallback(node_uid, wrapper)
 
-    def __updateDataValue(self, node_uid, value):
+    def __updateDataValue(self, node_uid, message):
         self.logger.debug("TAPMux.__updateDataValue():\n")
         dvmmsg = p2654model2.rvf.rvfmessage_pb2.RVFDataValue()
         dvmmsg.UID = node_uid
-        for v in value:
+        dvmmsg.nrbits = message.nrbits
+        for v in message.so_vector:
             dvmmsg.data.append(v)
         return self.updateDataValueCallback(node_uid, dvmmsg)
 

@@ -540,7 +540,7 @@ class JTAGChain(object):
             self.__sendResponse(node_uid, resp, metaname, uid)
             end = start
             i += 1
-        self.__updateDataValue(node_uid, message.tdo)
+        self.__updateDataValue(node_uid, message)
         return True
 
     def __runtest_resp_cb(self, node_uid, message):
@@ -767,11 +767,12 @@ class JTAGChain(object):
         wrapper.serialized = message.SerializeToString()
         return self.sendResponseCallback(node_uid, wrapper)
 
-    def __updateDataValue(self, node_uid, tdo):
+    def __updateDataValue(self, node_uid, message):
         self.logger.debug("JTAGChain.__updateDataValue({:s}):\n".format(self.name))
         dvmsg = p2654model2.rvf.rvfmessage_pb2.RVFDataValue()
         dvmsg.UID = node_uid
-        for v in tdo:
+        dvmsg.nrbits = message.nrbits
+        for v in message.tdo:
             dvmsg.data.append(v)
         return self.updateDataValueCallback(node_uid, dvmsg)
 

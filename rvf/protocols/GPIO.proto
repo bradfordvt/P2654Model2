@@ -3,10 +3,12 @@ package protocols;
 
 message INPUT {
   uint32 UID = 1;
-  uint32 value = 2;
+  uint32 nrbits = 2;
+  uint32 value = 3;
 }
 
 message OUTPUT {
   uint32 UID = 1;
-  uint32 value = 2;
+  uint32 nrbits = 2;
+  uint32 value = 3;
 }

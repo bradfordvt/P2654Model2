@@ -257,6 +257,7 @@ class TransformEngine(object):
             obsmsg = p2654model2.rvf.rvfmessage_pb2.RVFSelectEvent()
             my_path = nc.get_path_by_id(self.uid)
             obsmsg.path = my_path
+            obsmsg.nrbits = message.nrbits
             for v in message.data:
                 obsmsg.data.append(v)
             for obs_id in self.__observers:

@@ -342,7 +342,7 @@ class JTAGControllerAssembly(object):
         self.pending = True
         self.capture = True
         self.data_mode = True
-        self.__updateDataValue(node_uid, message.tdo)
+        self.__updateDataValue(node_uid, message)
         return True
 
     def __sir_cb(self, node_uid, message):
@@ -353,7 +353,7 @@ class JTAGControllerAssembly(object):
         self.pending = True
         self.capture = True
         self.data_mode = False
-        self.__updateDataValue(node_uid, message.tdo)
+        self.__updateDataValue(node_uid, message)
         return True
 
     def __runtest_cb(self, node_uid, message):
@@ -387,11 +387,11 @@ class JTAGControllerAssembly(object):
         return True
 
     def __sdr_resp_cb(self, node_uid, message):
-        self.__updateDataValue(node_uid, message.tdo)
+        self.__updateDataValue(node_uid, message)
         return True
 
     def __sir_resp_cb(self, node_uid, message):
-        self.__updateDataValue(node_uid, message.tdo)
+        self.__updateDataValue(node_uid, message)
         return True
 
     def __runtest_resp_cb(self, node_uid, message):
@@ -424,11 +424,12 @@ class JTAGControllerAssembly(object):
         wrapper.serialized = message.SerializeToString()
         return self.sendResponseCallback(node_uid, wrapper)
 
-    def __updateDataValue(self, node_uid, tdo):
+    def __updateDataValue(self, node_uid, message):
         self.logger.debug("JTAGControllerAssembly.__updateDataValue({:s}):\n".format(self.name))
         dvmsg = p2654model2.rvf.rvfmessage_pb2.RVFDataValue()
         dvmsg.UID = node_uid
-        for v in tdo:
+        dvmsg.nrbits = message.nrbits
+        for v in message.tdo:
             dvmsg.data.append(v)
         return self.updateDataValueCallback(node_uid, dvmsg)
 
