@@ -1,0 +1,34 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
+Person(BTOAlias, "Test Operator", "A Board\nTest Operator")
+
+System_Ext(BUTAlias, "Board Under Test", "A board that contains P2654 compliant devices")
+System_Ext(BEDAAlias, "Board EDA Tooling", "A set of tools to design, generate firmware, and develop tests for boards.")
+System_Boundary(ICTAlias, "In-Circuit Test Equipment (ICT)", "An automated system for applying tests through a fixture to a BUT to perform test, validation, and diagnosis"){
+    System(ICTGen, "Test Generator for ICT", "Takes CAD data and generates native test programs")
+    System(ICTTester, "ICT Test System", "Takes native tests and applies them to BUT")
+    ContainerDb(ICTStore, "ICT Local Repository", "Test Deployment", "Storage for ICT native tests")
+}
+SystemDb_Ext(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
+
+Rel(BTEAlias, BUTAlias, "Test Generation", "Test Application")
+Rel(BTEAlias, BEDAAlias, "ATPG Generation", "Test Development")
+Rel_D(BTEAlias, ICTGen, "Produces Tests For", "Test Deployment")
+Rel_L(BEDAAlias, ICTGen, "Produces Tests For", "Test Deployment")
+Rel_R(ICTTester, BUTAlias, "Tests", "Mfg Test")
+Rel_D(BEDAAlias, BDbAlias,"Preserves ATPG tests", "Test Deployment")
+Rel_U(BDbAlias, ICTGen, "Reuse of tests", "Test Deployment")
+Rel_R(ICTStore, BDbAlias, "Stores native tests", "Test Deployment")
+Rel_U(BTOAlias, ICTTester, "Volume Testing Boards", "Mfg Test")
+Rel_D(ICTGen, ICTStore, "Stores native tests", "Test Deployment")
+Rel(ICTStore, ICTTester, "Provides", "Test Deployment")
+Lay_R(BTOAlias, ICTAlias)
+@enduml

@@ -1,0 +1,50 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(BSAAlias, "Architect", "Board Architect")
+Person(BDESAlias, "Designer", "Board Designer")
+Person(SchemLayoutExpert, "Specialist", "Schematic Layout Expert")
+
+System_Boundary(BDEVTool, "Board ECAD Tool", "Design CAD and Layout Tooling"){
+    System(SchemEd, "Schematic Layout Editor", "Design tool to capture schematic design of a board")
+    System(SymbolEd, "Symbol Editor", "Editor tool to create symbols for devices to be used for schematics layout")
+    System(PCBEd, "PCB Layout Editor", "Transforming the design into PCB layout")
+    System(FootprintEd, "Footprint Editor", "Editor tool to create symbols for devices to be used for PCB layout")
+    System(GerberViewer, "Gerber Viewer", "Graphical viewer of exported CAD data used by other processes")
+    System(CktSimulator, "Spice Simulator", "Behavioral circuit simulator")
+    ContainerDb(LocalCADDb, "Local CAD Repository", "Storage")
+}
+ContainerDb_Ext(BCADRepo, "Board CAD Repository", "Tooling", "Persistent storage of CAD information")
+ContainerDb_Ext(BSpiceModels, "Spice Model Repository", "Tooling", "Persistent storage of Spice Models")
+
+Rel_D(BSAAlias, SchemEd, "Organizes board architecture", "Design")
+Rel_D(BDESAlias, SchemEd, "Defines implementation of", "Design")
+Rel_R(SchemLayoutExpert, SchemEd, "Organizes layout of", "Design")
+Rel_D(BDESAlias, SymbolEd, "Defines preferred BOM", "Design")
+Rel_L(SchemLayoutExpert, SymbolEd, "Creates missing symbols", "Design")
+Rel_L(SchemLayoutExpert, PCBEd, "Lays out PCB Design", "Design")
+Rel_L(SchemLayoutExpert, FootprintEd, "Creates missing footprints", "Design")
+Rel_L(SchemLayoutExpert, GerberViewer, "Verifies exported CAD data", "Design")
+Rel_R(BDESAlias, CktSimulator, "Verifies design constraints", "Design")
+
+Rel_D(SchemEd, LocalCADDb, "Generates Netlist and BOM", "Design")
+Rel_D(SymbolEd, LocalCADDb, "Generates Schematic and PCB symbols", "Design")
+Rel_D(LocalCADDb, PCBEd, "Uses Netlist for layout", "Design")
+Rel_D(PCBEd, LocalCADDb, "Export CAD data", "Design")
+Rel_U(FootprintEd, LocalCADDb, "Generates PCB Device footprints", "Design")
+Rel_U(LocalCADDb, GerberViewer, "Imports CAD data", "Design")
+
+Rel_L(LocalCADDb, BCADRepo, "Stores CAD data", "Design")
+Rel_D(BSpiceModels, CktSimulator, "Imports Spice Models", "Design")
+
+Lay_L(FootprintEd, GerberViewer)
+Lay_L(SymbolEd, SchemEd)
+Lay_D(SymbolEd, FootprintEd)
+Lay_R(BSAAlias, BDESAlias)
+@enduml

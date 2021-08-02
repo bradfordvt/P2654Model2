@@ -1,0 +1,38 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
+Person_Ext(BCustomerAlias, "Customers", "Board Customers", $sprite="users")
+Person(BSAAlias, "Architect", "Board Architect")
+Person(BTOAlias, "Test Operator", "A Board\nTest Operator")
+
+System_Ext(DUTAlias, "Device Under Test", "A device that contains IEEE 1687 instrumentation")
+System(BUTAlias, "Board Under Test", "A board that contains P2654 compliant devices")
+System(BEDAAlias, "Board EDA Tooling", "A set of tools to design, generate firmware, and develop tests for boards.")
+System(BFCTAlias, "Functional Test Equipment (FCT)", "An automated system for applying functional tests through a fixture to a BUT to perform test, validation, and diagnosis")
+System_Ext(SUTAlias, "System Under Test", "A system that contains P2654 compliant boards and/or sub-systems")
+SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")
+SystemDb_Ext(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
+
+Rel(BTEAlias, BUTAlias, "Test Generation", "Test Application")
+Rel(BTEAlias, BEDAAlias, "ATPG Generation", "Test Development")
+Rel_D(BTEAlias, BFCTAlias, "Produces Tests For", "Test Deployment")
+Rel_R(BEDAAlias, BFCTAlias, "Produces Tests For", "Test Deployment")
+Rel_D(BCustomerAlias, BUTAlias, "Purchase Boards", "Sales")
+Rel_U(BSAAlias, BEDAAlias, "Organizes board architecture", "Design")
+Rel_R(BFCTAlias, BUTAlias, "Tests", "Mfg Test")
+Rel_U(SUTAlias, BUTAlias, "Contains", "In-System Test")
+Rel_D(BEDAAlias, BDbAlias,"Preserves ATPG tests", "Test Deployment")
+Rel_U(BDbAlias, BFCTAlias, "Reuse of tests", "Test Deployment")
+Rel_D(DevDbAlias, BEDAAlias, "Provides Device Tests", "Design, Production")
+Rel_R(BUTAlias, DUTAlias, "Contains", "In-System Test")
+Rel_D(BFCTAlias, BDbAlias, "Stores native tests", "Test Deployment")
+Rel_U(BTOAlias, BFCTAlias, "Volume Testing Boards", "Mfg Test")
+Lay_R(BTOAlias, BFCTAlias)
+@enduml

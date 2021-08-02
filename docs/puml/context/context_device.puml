@@ -1,0 +1,37 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(DTEAlias, "Test Engineer", "A Device\nTest Engineer")
+Person_Ext(DCustomerAlias, "Customers", "Device Customers", $sprite="users")
+Person(DSAAlias, "Architect", "Device/SoC Architect")
+Person(DDESAlias, "Designer", "Device Designer")
+Person_Ext(IPProvidersAlias, "Providers", "IP Providers", $sprite="users")
+Person(DTOAlias, "Test Operator", "A Device\nTest Operator")
+
+System(DUTAlias, "Device Under Test", "A device that contains IEEE 1687 instrumentation")
+System(EDAAlias, "Device EDA Tooling", "A set of tools to design, generate RTL, and develop tests for IP and devices.")
+System(ATEAlias, "Device Automated Test Equipment (ATE)", "An automated system for applying tests through a fixture to a DUT to perform test, validation, and diagnosis")
+System_Ext(BUTAlias, "Board Under Test", "A board that contains P2654 compliant devices")
+SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")
+
+Rel(DTEAlias, EDAAlias, "ATPG Generation", "Test Development")
+Rel_R(DTEAlias, DUTAlias, "Test Generation", "Test Application")
+Rel_D(DTEAlias, ATEAlias, "Produces Tests For", "Test Deployment")
+Rel_R(EDAAlias, ATEAlias, "Produces Tests For", "Test Deployment")
+Rel_D(DCustomerAlias, DUTAlias, "Purchase Devices", "Sales")
+Rel_U(DTOAlias, ATEAlias, "Volume Testing Devices", "Mfg Test")
+Rel(IPProvidersAlias, EDAAlias, "Creates input data for", "Design")
+Rel_U(DSAAlias, EDAAlias, "Organizes device architecture", "Design")
+Rel_R(ATEAlias, DUTAlias, "Tests", "Mfg Test")
+Rel_U(BUTAlias, DUTAlias, "Contains", "In-System Test")
+Rel(EDAAlias, DevDbAlias,"Preserves ATPG tests", "Test Deployment")
+Rel_U(DevDbAlias, ATEAlias, "Reuse of tests", "Test Deployment")
+Rel_U(DDESAlias, EDAAlias, "Design and integrates logic and IP Blocks", "Design")
+Rel_R(ATEAlias, DevDbAlias, "Store native tests", "Test Deployment")
+@enduml

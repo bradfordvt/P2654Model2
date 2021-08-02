@@ -1,0 +1,36 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
+Person_Ext(BCustomerAlias, "Customers", "Board Customers", $sprite="users")
+Person_Ext(BSAAlias, "Architect", "Board Architect")
+Person(SWDevAlias, "SW Developer", "A Software Developer responsible for in-system testing and/or operation")
+
+System_Ext(DUTAlias, "Device Under Test", "A device that contains IEEE 1687 instrumentation")
+System(BUTAlias, "Board Under Test", "A board that contains P2654 compliant devices")
+System_Ext(BEDAAlias, "Board EDA Tooling", "A set of tools to design, generate firmware, and develop tests for boards.")
+System(SWAlias, "Software Development Environment", "An software system for developing application code for a BUT")
+SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")
+SystemDb_Ext(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
+
+Rel(BTEAlias, BUTAlias, "Test Generation", "Test Application")
+Rel(BTEAlias, BEDAAlias, "ATPG Generation", "Test Development")
+Rel_D(BTEAlias, SWAlias, "Produces Tests For", "Test Deployment")
+Rel_R(BEDAAlias, SWAlias, "Produces Tests For", "Test Deployment")
+Rel_D(BCustomerAlias, BUTAlias, "Purchase Boards", "Sales")
+Rel_U(BSAAlias, BEDAAlias, "Organizes board architecture", "Design")
+Rel_R(SWAlias, BUTAlias, "Tests", "Mfg Test")
+Rel_D(BEDAAlias, BDbAlias,"Preserves ATPG tests", "Test Deployment")
+Rel_U(BDbAlias, SWAlias, "Reuse of tests", "Test Deployment")
+Rel_D(DevDbAlias, BEDAAlias, "Provides Device Tests", "Design, Production")
+Rel_R(BUTAlias, DUTAlias, "Contains", "In-System Test")
+Rel_D(SWAlias, BDbAlias, "Stores native tests", "Test Deployment")
+Rel_U(SWDevAlias, SWAlias, "Integrates embedded tests for Boards", "Mfg Test")
+Lay_R(SWDevAlias, SWAlias)
+@enduml
