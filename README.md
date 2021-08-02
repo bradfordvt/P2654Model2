@@ -20,6 +20,17 @@ and insight are discovered.  Thus, citations to this
 document should indicate a date to when it was referenced.
 The GitHub change management tooling should allow
 accurate retrieval of the version cited.
+
+###MJBUnification20210720.pptx
+This presentation contains the overview of demarcation between IEEE P2654 and IEEE P1687.1.
+The concept of a P2654 Transport Layer Channel is introduced consisting of
+RVFMessage packets transporting Bottom-Up Requests and Responses an RVFCommand
+packets transporting Top-Down Requests and Responses between P2654 Nodes in the P2654 Tree model.
+###P2654_C4Model_Architecture.docx
+This document contains the C4 Model diagrams representing the context
+of the various use case perspectives identified by the P2654 and P1687.1 working groups.  The
+diagrams were created using PlantUML.  The source PUML files
+may be found under the docs/puml directory.
 ##drivers
 This directory contains the interface code to hardware
 drivers used to validate the synchronization of the P2654Model2
