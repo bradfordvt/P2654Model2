@@ -30,4 +30,5 @@ Rel_U(DevDbAlias, ATEGen, "Reuse of tests", "Test Deployment")
 Rel(ATEGen, ATEStore, "Stores native tests", "Test Deployment")
 Rel(ATEStore, ATETester, "Provides", "Test Deployment")
 Rel_R(ATEStore, DevDbAlias, "Store native tests", "Test Deployment")
+Rel(ATEGen, EDAAlias, "Provide data response for diagnostic analysis", "Test Analysis")
 @enduml

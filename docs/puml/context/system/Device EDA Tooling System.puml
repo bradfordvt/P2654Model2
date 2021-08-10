@@ -11,6 +11,8 @@ Person(DTEAlias, "Test Engineer", "A Device\nTest Engineer")
 Person(DSAAlias, "Architect", "Device/SoC Architect")
 Person_Ext(IPProvidersAlias, "Providers", "IP Providers", $sprite="users")
 Person(DDESAlias, "Designer", "Device Designer")
+Person(Integrator, "IP Integrator",  "Integrates IP modules together")
+Person(SWIntegrator, "Software Integrator",  "Integrates provided SW from IP providers together")
 
  System_Boundary(EDAAlias, "Device EDA Tooling", "A set of tools to design, generate RTL, and develop tests for IP and devices."){
      ContainerDb_Ext(PDATAlias, "Provider Repository", "Zip File", "Stores of RTL/PDL/ICL code")
