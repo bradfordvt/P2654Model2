@@ -1,0 +1,69 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
+
+System_Boundary(BATPGAlias, "Board ATPG Tooling", "A set of tools to design, generate firmware, and develop tests for boards."){
+    System(BrdATPG, "Board Level ATPG", "Takes CAD data and generates reusable native test programs automatically")
+    System(BrdTPG, "Board Level TPG", "Takes CAD data and assistance to generates reusable native test programs")
+    System(BrdPTPG, "Board Level PTPG", "Takes CAD data and assistance to create programmable scripts for configuration and testing")
+    System(JTAGATPGGen, "ATPG Test Generator for Static Tests", "Takes CAD data and generates reusable native test programs")
+    System(JTAGProgGen, "Persistent Memory Programming Generator", "Takes CAD data, memory model, and data to generate reusable native programming objectives")
+    System(JTAGMemTestGen, "Memory Test Generator", "Takes CAD data and memory model to generate reusable native structural tests")
+    System(JTAGClustTestGen, "Cluster Test Generator", "Takes CAD data and cluster models to generate reusable native structural tests")
+    System(DSLApp, "Domain Specific Language (DSL) Application", "An application to execute procedures written in a DSL for a specific domain to perform operations on the BUT")
+    ContainerDb(LocalStore, "Local Repository", "Test Deployment", "Storage for JTAG native tests")
+}
+System_Ext(ICTAlias, "In-Circuit Test Equipment (ICT)", "An automated system for applying tests through a fixture to a BUT to perform test, validation, and diagnosis")
+SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")
+SystemDb_Ext(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
+ContainerDb_Ext(BCADRepo, "Board CAD Repository", "Tooling", "Persistent storage of CAD information")
+SystemDb_Ext(BDbDataAlias, "Board Programming Repository", "A repository of software, firmware, and configuration data for a board")
+SystemDb_Ext(BDbMemAlias, "Board Memory Model Repository", "A repository of memory access algorithms for memory devices")
+SystemDb_Ext(BDbClustAlias, "Board Cluster Model Repository", "A repository of logic clusters of devices")
+SystemDb_Ext(BDbDSLAlias, "Board DSL Procedure Repository", "A repository of DSL procedures written by testers of the BUT")
+System_Ext(JTAGAlias, "Board JTAG Test Equipment (BSCAN)", "An automated system for applying 1149.1 tests through a fixture to a BUT to perform test, validation, and diagnosis")
+System_Ext(BFCTAlias, "Functional Test Equipment (FCT)", "An automated system for applying functional tests through a fixture to a BUT to perform test, validation, and diagnosis")
+System_Ext(SWAlias, "Software Development Environment", "A software system for developing application code for a BUT")
+
+Rel(BTEAlias, JTAGATPGGen, "ATPG Generation", "Test Development")
+Rel(BTEAlias, JTAGProgGen, "Programming", "Test Development")
+Rel(BTEAlias, JTAGMemTestGen, "Memory Test", "Test Development")
+Rel(BTEAlias, BrdATPG, "Cluster Test", "Test Development")
+Rel(BTEAlias, BrdTPG, "Cluster Test", "Test Development")
+Rel_D(LocalStore, ICTAlias, "Produces Tests For", "Test Deployment")
+Rel_D(LocalStore, JTAGAlias, "Produces Tests For", "Test Deployment")
+Rel_D(LocalStore, BFCTAlias, "Produces Tests For", "Test Deployment")
+Rel_D(LocalStore, SWAlias, "Produces Tests For", "Test Deployment")
+Rel_D(LocalStore, BDbAlias,"Preserves tests", "Test Deployment")
+Rel_U(BDbAlias, ICTAlias, "Reuse of tests", "Test Deployment")
+Rel_U(BDbAlias, JTAGAlias, "Reuse of tests", "Test Deployment")
+Rel_U(BDbAlias, BFCTAlias, "Reuse of tests", "Test Deployment")
+Rel_U(BDbAlias, SWAlias, "Reuse of tests", "Test Deployment")
+Rel_D(DevDbAlias, BrdATPG, "Provides Device Tests", "Design, Production")
+Rel_D(ICTAlias, BDbAlias, "Stores native tests", "Test Deployment")
+Rel_D(JTAGAlias, BDbAlias, "Stores native tests", "Test Deployment")
+Rel_D(BFCTAlias, BDbAlias, "Stores native tests", "Test Deployment")
+Rel_D(SWAlias, BDbAlias, "Stores native tests", "Test Deployment")
+Rel_U(BCADRepo, LocalStore, "Provides CAD data for tool automation", "Test Development")
+Rel_D(JTAGATPGGen, LocalStore, "Stores", "Test Deployment")
+Rel_D(JTAGProgGen, LocalStore, "Stores", "Test Deployment")
+Rel_D(JTAGMemTestGen, LocalStore, "Stores", "Test Deployment")
+Rel_D(BrdATPG, LocalStore, "Stores", "Test Deployment")
+Rel_D(DSLApp, LocalStore, "Stores", "Test Deployment")
+Rel_D(BDbDataAlias, JTAGProgGen, "Provides", "Test Deployment")
+Rel_D(BDbMemAlias, JTAGProgGen, "Provides algorithms", "Test Generation")
+Rel_D(BDbMemAlias, JTAGMemTestGen, "Provides", "Test Generation")
+Rel_D(BDbClustAlias, BrdATPG, "Provides", "Test Generation")
+Rel_D(BDbDSLAlias, DSLApp, "Provides", "Test Generation")
+Lay_R(JTAGATPGGen, JTAGProgGen)
+Lay_R(JTAGProgGen, JTAGMemTestGen)
+Lay_R(JTAGMemTestGen, JTAGClustTestGen)
+Lay_R(JTAGClustTestGen, DSLApp)
+@enduml
