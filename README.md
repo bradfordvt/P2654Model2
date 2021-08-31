@@ -32,34 +32,62 @@ of the various use case perspectives identified by the P2654 and P1687.1 working
 diagrams were created using PlantUML.  The source PUML files
 may be found under the docs/puml directory.
 ###C4 Models found under docs/puml/context
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_systemFCT.puml)
-####Figure 1 - docs/puml/context/context_systemFCT.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_boardFCT.puml)
-####Figure 2 - docs/puml/context/context_boardFCT.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_boardICT.puml)
-####Figure 3 - docs/puml/context/context_boardICT.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_boardJTAG.puml)
-####Figure 4 - docs/puml/context/context_boardJTAG.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_boardEmbedded.puml)
-####Figure 5 - docs/puml/context/context_boardEmbedded.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_device.puml)
-####Figure 6 - docs/puml/context/context_device.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_ATPG_Tooling_System.puml)
-####Figure 7 - docs/puml/context/system/Board_ATPG_Tooling_System.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_ATPG2_Tooling_System.puml)
-####Figure 8 - docs/puml/context/system/Board ATPG2 Tooling System.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_ECAD_Tooling_System.puml)
-####Figure 9 - docs/puml/context/system/Board ECAD Tooling System.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_EDA_Tooling_System.puml)
-####Figure 10 - docs/puml/context/system/Board EDA Tooling System.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_ICT_System.puml)
-####Figure 11 - docs/puml/context/system/Board ICT System.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_JTAG_Test_Equipment_System.puml)
-####Figure 12 - docs/puml/context/system/Board JTAG Test Equipment System.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Device_ATE_System.puml)
-####Figure 13 - docs/puml/context/system/Device ATE System.puml
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Device_EDA_Tooling_System.puml)
-####Figure 14 - docs/puml/context/system/Device EDA Tooling System.puml
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_systemFCT.puml) |
+| --- |
+| *Figure 1 - docs/puml/context/context_systemFCT.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_boardFCT.puml) |
+| --- |
+| *Figure 2 - docs/puml/context/context_boardFCT.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_boardICT.puml) |
+| --- |
+| *Figure 3 - docs/puml/context/context_boardICT.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_boardJTAG.puml) |
+| --- |
+| *Figure 4 - docs/puml/context/context_boardJTAG.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_boardEmbedded.puml) |
+| --- |
+| *Figure 5 - docs/puml/context/context_boardEmbedded.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/context_device.puml) |
+| --- |
+| *Figure 6 - docs/puml/context/context_device.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_ATPG_Tooling_System.puml) |
+| --- |
+| *Figure 7 - docs/puml/context/system/Board_ATPG_Tooling_System.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_ATPG2_Tooling_System.puml) |
+| --- |
+| *Figure 8 - docs/puml/context/system/Board ATPG2 Tooling System.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_ECAD_Tooling_System.puml) |
+| --- |
+| *Figure 9 - docs/puml/context/system/Board ECAD Tooling System.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_EDA_Tooling_System.puml) |
+| --- |
+| *Figure 10 - docs/puml/context/system/Board EDA Tooling System.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_ICT_System.puml) |
+| --- |
+| *Figure 11 - docs/puml/context/system/Board ICT System.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Board_JTAG_Test_Equipment_System.puml) |
+| --- |
+| *Figure 12 - docs/puml/context/system/Board JTAG Test Equipment System.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Device_ATE_System.puml) |
+| --- |
+| *Figure 13 - docs/puml/context/system/Device ATE System.puml* |
+
+| ![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/bradfordvt/P2654Model2/main/docs/puml/context/system/Device_EDA_Tooling_System.puml) |
+| --- |
+| *Figure 14 - docs/puml/context/system/Device EDA Tooling System.puml* |
+
 ##drivers
 This directory contains the interface code to hardware
 drivers used to validate the synchronization of the P2654Model2
