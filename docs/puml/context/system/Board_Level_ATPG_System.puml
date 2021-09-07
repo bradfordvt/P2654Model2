@@ -1,0 +1,63 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+left to right direction
+
+Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
+
+System_Boundary(BrdATPG, "Board Level ATPG", "Takes CAD data and generates reusable native test programs automatically"){
+    System(JTAGInfrastructureGen, "Infrastructure Test Generator", "Takes CAD data, logic models, and data to generate reusable native infrastructure structural tests to verify test interface")
+    System(JTAGInterconnectGen, "Interconnect Test Generator", "Takes CAD data, logic models, and data to generate reusable native structural tests")
+    System(JTAGProgGen, "Persistent Memory Programming Generator", "Takes CAD data, memory model, and data to generate reusable native programming objectives")
+    System(JTAGMemTestGen, "Memory Test Generator", "Takes CAD data and memory model to generate reusable native structural tests")
+    System(JTAGClustTestGen, "Cluster Test Generator", "Takes CAD data and cluster models to generate reusable native structural tests")
+    System(DeviceTestIntegrationApp, "Device Test Integration Application", "An application to integrate tests developed for device manufacture to be run at board test")
+    ContainerDb(LocalStore, "Local Repository", "Test Deployment", "Storage for JTAG native tests")
+}
+SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")
+ContainerDb_Ext(BCADRepo, "Board CAD Repository", "Tooling", "Persistent storage of CAD information")
+SystemDb_Ext(BDbMemAlias, "Board Memory Model Repository", "A repository of memory access algorithms for memory devices")
+SystemDb_Ext(BDbClustAlias, "Board Cluster Model Repository", "A repository of logic clusters of devices")
+SystemDb_Ext(ConstraintModelAlias, "Constraints Model Repository", "Definitions of constraints of signals required for tests run in-board or in-system environments")
+
+Lay_D(LocalStore, JTAGProgGen)
+Lay_D(BTEAlias, JTAGProgGen)
+Lay_D(BTEAlias, BrdATPG)
+Lay_R(JTAGInfrastructureGen, JTAGInterconnectGen)
+Lay_R(JTAGInterconnectGen, JTAGProgGen)
+Lay_R(JTAGProgGen, JTAGMemTestGen)
+Lay_R(JTAGMemTestGen, JTAGClustTestGen)
+Lay_L(JTAGMemTestGen, DeviceTestIntegrationApp)
+
+Rel_R(BTEAlias, JTAGInfrastructureGen, "Infrastructure", "Test Development")
+Rel_R(BTEAlias, JTAGInterconnectGen, "Structural Test", "Test Development")
+Rel_R(BTEAlias, JTAGProgGen, "Configuration", "Test Development")
+Rel_R(BTEAlias, JTAGMemTestGen, "Structural Test", "Test Development")
+Rel_R(BTEAlias, JTAGClustTestGen, "Structural Test", "Test Development")
+Rel_R(BTEAlias, DeviceTestIntegrationApp, "Structural/Functional Test", "Test Development")
+Rel_R(JTAGInfrastructureGen, LocalStore, "Stores", "Test Deployment")
+Rel(JTAGInterconnectGen, LocalStore, "Stores", "Test Deployment")
+Rel(JTAGProgGen, LocalStore, "Stores", "Test Deployment")
+Rel(JTAGMemTestGen, LocalStore, "Stores", "Test Deployment")
+Rel(JTAGClustTestGen, LocalStore, "Stores", "Test Deployment")
+Rel(DeviceTestIntegrationApp, LocalStore, "Stores", "Test Deployment")
+Rel(DevDbAlias, DeviceTestIntegrationApp, "Provides Device Tests", "Design, Production")
+Rel_L(BCADRepo, LocalStore, "Provides CAD data for tool automation", "Test Development")
+Rel(BDbMemAlias, JTAGProgGen, "Provides algorithms", "Test Generation")
+Rel(BDbMemAlias, JTAGMemTestGen, "Provides", "Test Generation")
+Rel(BDbClustAlias, JTAGClustTestGen, "Provides", "Test Generation")
+Rel_R(ConstraintModelAlias, DeviceTestIntegrationApp, "Provides", "Test Generation")
+
+
+Rel_L(LocalStore, JTAGInterconnectGen, "CAD Data", "Test Development")
+Rel(LocalStore, JTAGProgGen, "CAD Data", "Test Development")
+Rel(LocalStore, JTAGMemTestGen, "CAD Data", "Test Development")
+Rel(LocalStore, JTAGClustTestGen,"CAD Data", "Test Development")
+Rel_L(LocalStore, DeviceTestIntegrationApp,"CAD Data", "Test Development")
+Rel_L(LocalStore, JTAGInfrastructureGen,"CAD Data", "Test Development")
+@enduml
