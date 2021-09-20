@@ -1,0 +1,66 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+left to right direction
+
+Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
+Person(FPGADes, "FPGA Designer", "An FPGA Designer")
+Person(BSAAlias, "Architect", "Board Architect")
+Person(BDESAlias, "Designer", "Board Designer")
+Person(SchemLayoutExpert, "Specialist", "Schematic Layout Expert")
+Person(BTOAlias, "Test Operator", "A Board\nTest Operator")
+Person_Ext(BCustomerAlias, "Customers", "Board Customers", $sprite="users")
+Person(SWDevAlias, "SW Developer", "A Software Developer responsible for in-system testing and/or operation")
+
+System_Boundary(BrdLevel, "Board Level Context", "Board Domain Context"){
+    System(BrdECAD, "Board ECAD Tool", "Design CAD and Layout Tooling")
+    System(BrdEDA, "Board EDA Tooling", "A set of tools to design, generate firmware, and develop tests for boards")
+    SystemDb(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
+    SystemDb(BDbDataAlias, "Board Programming Repository", "A repository of software, firmware, and configuration data for a board")
+    SystemDb(BDbMemAlias, "Board Memory Model Repository", "A repository of memory access algorithms for memory devices")
+    SystemDb(BDbDSLAlias, "Board DSL Procedure Repository", "A repository of DSL procedures written by testers of the BUT")
+    ContainerDb(BCADRepo, "Board CAD Repository", "Tooling", "Persistent storage of CAD information")
+    System(BrdTEq, "Board Test Equipment", "Test equipment used to test and diagnose assembled boards")
+    System(BrdEmbed, "Embedded Board Test Environment", "The OA&M portion of the application used to configure, test, and operate the board systems")
+}
+SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")
+SystemDb_Ext(ConstraintModelAlias, "Constraints Model Repository", "Definitions of constraints of signals required for tests run in-board or in-system environments")
+System_Ext(BUTAlias, "Board Under Test", "A board that contains P2654 compliant devices")
+System_Ext(SUTAlias, "System Under Test", "A system that contains P2654 compliant boards and/or sub-systems")
+System_Ext(DUTAlias, "Device Under Test", "A device that contains IEEE 1687 instrumentation")
+
+Rel_R(BTEAlias, BrdEDA, "Test Generation", "Test Development")
+Rel_U(FPGADes, BrdEDA, "FPGA Design", "Design")
+Rel(ConstraintModelAlias, BrdEDA,  "Provides", "Test Generation")
+Rel(BCADRepo, BrdEDA, "Provides", "Test Generation")
+Rel(DevDbAlias, BrdEDA, "Provides Device Tests", "Design, Production")
+Rel(BrdECAD, BCADRepo, "Stores CAD data", "Design")
+Rel_L(BrdEDA, BDbAlias, "Stores Tests", "Test Deployment")
+Rel(BDbDataAlias, BrdEDA, "Provides Content", "Test Generation")
+Rel(BDbMemAlias, BrdEDA, "Provides Content", "Test Generation")
+Rel(BDbDSLAlias, BrdEDA, "Provides Content", "Test Generation")
+Rel_U(BTOAlias, BrdTEq, "Volume Testing Boards", "Mfg Test")
+Rel(BSAAlias, BrdECAD, "Organizes board architecture", "Design")
+Rel(BDESAlias, BrdECAD, "Defines implementation of", "Design")
+Rel(SchemLayoutExpert, BrdECAD, "Organizes layout of", "Design")
+Rel(BDESAlias, BrdECAD, "Defines preferred BOM", "Design")
+Rel(BrdEDA, BrdTEq, "Produces Tests For", "Test Deployment")
+Rel(BDbAlias, BrdTEq, "Reuse of tests", "Test Deployment")
+Rel_L(BrdTEq, BUTAlias, "Tests", "Mfg Test")
+Rel_L(BrdTEq, BDbAlias, "Stores native tests", "Test Development")
+Rel(BrdEDA, BrdEmbed, "Produces Tests For", "Run-time")
+Rel(BTEAlias, BrdTEq, "Produces Tests For", "Test Deployment")
+Rel(BTEAlias, BrdEmbed, "Reuse of tests", "Run-time")
+Rel_D(SUTAlias, BUTAlias, "Contains", "In-System Test")
+Rel_R(BUTAlias, DUTAlias, "Contains", "In-System Test")
+Rel_D(BCustomerAlias, BUTAlias, "Purchase Boards", "Sales")
+Rel_D(SWDevAlias, BrdEmbed, "Integrates embedded tests for Boards", "Mfg Test")
+Lay_U(BrdEmbed, SWDevAlias)
+Lay_D(BrdEDA, BDbAlias)
+Lay_L(BUTAlias, BTOAlias)
+@enduml

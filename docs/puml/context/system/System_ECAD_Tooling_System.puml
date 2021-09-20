@@ -1,0 +1,36 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+left to right direction
+
+Person(SSAAlias, "Architect", "System Architect")
+Person(SDESAlias, "Designer", "System Designer")
+Person(ModuleLayoutExpert, "Specialist", "Module Layout Expert")
+Person(SWDevAlias, "SW Developer", "A Software Developer responsible for in-system testing and/or operation")
+
+System_Boundary(SDEVTool, "System ECAD Tool", "Design CAD, Layout, and Documentation Tooling"){
+    System(HLDEditor, "High-Level Design (HLD) Editor", "Documentation tool for HLD Descriptions")
+    System(UMLEditor, "Software Model Editor", "Editor tool to create descriptions of high-level system software")
+    ContainerDb(LocalCADDb, "Local CAD Repository", "Storage")
+}
+ContainerDb_Ext(SCADRepo, "System CAD Repository", "Tooling", "Persistent storage of CAD information")
+
+Rel_D(SSAAlias, HLDEditor, "Organizes board architecture", "Design")
+Rel_D(SDESAlias, HLDEditor, "Defines implementation of", "Design")
+Rel_R(ModuleLayoutExpert, HLDEditor, "Organizes layout of", "Design")
+Rel_D(SDESAlias, UMLEditor, "Defines preferred Architecture", "Design")
+Rel_D(SWDevAlias, UMLEditor, "Expands detail of Architecture", "Design")
+Rel_L(ModuleLayoutExpert, UMLEditor, "Creates missing module diagrams", "Design")
+
+Rel_D(HLDEditor, LocalCADDb, "Defines Module Interconnections", "Design")
+Rel_D(UMLEditor, LocalCADDb, "Defines High-Level Design of System Software", "Design")
+Rel_L(LocalCADDb, SCADRepo, "Stores CAD data", "Design")
+
+Lay_L(UMLEditor, HLDEditor)
+Lay_R(SSAAlias, SDESAlias)
+@enduml

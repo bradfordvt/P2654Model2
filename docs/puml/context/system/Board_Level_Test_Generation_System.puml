@@ -1,0 +1,56 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+left to right direction
+
+Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
+Person(FPGADes, "FPGA Designer", "An FPGA Designer")
+
+System_Boundary(BrdTest, "Board Level Test Generation", "Implements test/programming/configuration objectives"){
+    System(BrdATPG, "Board Level ATPG", "Takes CAD data and generates reusable native test programs automatically")
+    System(BrdPTPG, "Board Level PTPG", "Takes CAD data, device model, and data to generate reusable native programming/configuration objectives")
+    System(BrdFCT, "Board Level FCT", "Takes CAD data and human assistance to generates reusable functional test programs")
+    System(BrdInteg, "Board Level Integration", "Takes tests from other systems and composes Test Sets to be used in Test Suites")
+    System(BrdCompose, "Board Level Composition", "Takes Test Steps and composes Test Suites to be applied as a collection of tests to be applied to a board")
+    SystemDb(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
+    SystemDb(BDbDataAlias, "Board Programming Repository", "A repository of software, firmware, and configuration data for a board")
+    SystemDb(BDbMemAlias, "Board Memory Model Repository", "A repository of memory access algorithms for memory devices")
+    SystemDb(BDbDSLAlias, "Board DSL Procedure Repository", "A repository of DSL procedures written by testers of the BUT")
+}
+ContainerDb_Ext(BCADRepo, "Board CAD Repository", "Tooling", "Persistent storage of CAD information")
+SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")
+SystemDb_Ext(ConstraintModelAlias, "Constraints Model Repository", "Definitions of constraints of signals required for tests run in-board or in-system environments")
+SystemDb_Ext(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
+
+Rel(FPGADes, BrdPTPG, "FPGA Design", "Design")
+Rel(BTEAlias, BrdATPG, "Program Generation", "Test Development")
+Rel(BTEAlias, BrdPTPG, "Program Generation", "Test Development")
+Rel(BTEAlias, BrdFCT, "Program Generation", "Test Development")
+Rel(BTEAlias, BrdInteg, "Program Generation", "Test Development")
+Rel(BTEAlias, BrdCompose, "Program Generation", "Test Development")
+Rel(BDbMemAlias, BrdATPG, "Provides algorithms", "Test Generation")
+Rel(BDbMemAlias, BrdPTPG, "Provides algorithms", "Test Generation")
+Rel(BDbDSLAlias, BrdATPG, "Provides", "Test Generation")
+Rel(BDbDSLAlias, BrdPTPG, "Provides", "Test Generation")
+Rel(BDbDSLAlias, BrdFCT, "Provides", "Test Generation")
+Rel_U(BCADRepo, BrdATPG, "Provides", "Test Generation")
+Rel_U(BCADRepo, BrdPTPG, "Provides", "Test Generation")
+Rel_U(BCADRepo, BrdFCT, "Provides", "Test Generation")
+Rel(BDbDataAlias, BrdPTPG, "Provides Content", "Test Generation")
+Rel_D(BrdATPG, BDbAlias, "Stores Tests", "Test Deployment")
+Rel_D(BrdPTPG, BDbAlias, "Stores Tests", "Test Deployment")
+Rel_D(BrdFCT, BDbAlias, "Stores Tests", "Test Deployment")
+Rel_D(BrdInteg, BDbAlias, "Stores Tests", "Test Deployment")
+Rel_D(BrdCompose, BDbAlias, "Stores Tests", "Test Deployment")
+Rel(BrdATPG, BrdInteg, "Provides Test Steps", "Association")
+Rel(BrdPTPG, BrdInteg, "Provides Test Steps", "Association")
+Rel(BrdFCT, BrdCompose, "Provides Test Steps", "Association")
+Rel(BrdInteg, BrdCompose, "Provides Test Steps", "Association")
+Rel_L(DevDbAlias, BrdInteg, "Provides Tests", "Design, Production")
+Rel(ConstraintModelAlias, BrdFCT,  "Provides", "Test Generation")
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(DDESAlias, "Designer", "ASIC/FPGA Designer")
+
+System_Boundary(DSIMTool, "Device SIM Tool", "Design Simulation, Synthesis, and Place & Route Tooling"){
+    System(Simulator, "Simulation Tool", "Tool used to simulate the Hardware models. To test if the RTL code meets the functional requirements of the specification, we must see if all the RTL blocks are functionally correct. To achieve this we need to write a testbench, which generates clk, reset and the required test vectors.")
+    ContainerDb(LocalCADDb, "Local CAD Repository", "Storage")
+}
+ContainerDb_Ext(DevCADRepo, "Device CAD Repository", "Tooling", "Persistent storage of CAD information")
+
+Rel(DDESAlias, Simulator, "Tests the functionality of the design", "Design")
+Rel(Simulator, LocalCADDb, "Stores simulation waveforms", "Design")
+Rel(LocalCADDb, Simulator, "Imports Test Benches", "Design")
+Rel_L(LocalCADDb, DevCADRepo, "Stores CAD data", "Design")
+@enduml

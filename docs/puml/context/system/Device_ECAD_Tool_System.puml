@@ -1,0 +1,35 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(DSAAlias, "Architect", "Device Architect")
+Person(DDESAlias, "Designer", "ASIC/FPGA Designer")
+Person(DTEAlias, "Test Engineer", "A Device\nTest Engineer")
+
+System_Boundary(DDEVTool, "Device ECAD Tool", "Design CAD and Layout Tooling"){
+    System(DevSpecification, "Device Specification Editor", "Document editor to define what are the important parameters of the system/design that you are planning to design")
+    System(HLDEd, "High-Level Design (HLD) Editor", "Document editor to define various blocks in the design and how they communicate")
+    System(LLDEd, "Low-Level Design (LLD) Editor", "Document editor to describes how each block is implemented. It contains details of State machines, counters, Mux, decoders, internal registers. It is always a good idea to draw waveforms at various interfaces.")
+    System(RTLEd, "RTL Code Editor", "Editor tool to describe how the design is converted into Verilog/VHDL code, using synthesizable constructs of the language.")
+    ContainerDb(LocalCADDb, "Local CAD Repository", "Storage")
+}
+ContainerDb_Ext(DevCADRepo, "Device CAD Repository", "Tooling", "Persistent storage of CAD information")
+
+Rel(DSAAlias, DevSpecification, "Defines device architecture", "Design")
+Rel(DSAAlias, HLDEd, "Defines module architecture", "Design")
+Rel(DDESAlias, HLDEd, "Defines design details", "Design")
+Rel(DDESAlias, LLDEd, "Defines implementation of", "Design")
+Rel(DDESAlias, RTLEd, "Implements design and Test Benches", "Design")
+Rel(DTEAlias, RTLEd, "Implements Test Benches", "Design")
+
+Rel(DevSpecification, LocalCADDb, "Stores specification documentation", "Design")
+Rel(HLDEd, LocalCADDb, "Stores HLD documentation", "Design")
+Rel(LLDEd, LocalCADDb, "Stores LLD documentation", "Design")
+Rel(RTLEd, LocalCADDb, "Stores RTL code and Test Benches", "Design")
+Rel_L(LocalCADDb, DevCADRepo, "Stores CAD data", "Design")
+@enduml

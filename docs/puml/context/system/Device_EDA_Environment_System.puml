@@ -1,0 +1,43 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+
+Person(DTEAlias, "Test Engineer", "A Device\nTest Engineer")
+Person(DSAAlias, "Architect", "Device/SoC Architect")
+Person_Ext(IPProvidersAlias, "Providers", "IP Providers", $sprite="users")
+Person(DDESAlias, "Designer", "Device Designer")
+Person(Integrator, "IP Integrator",  "Integrates IP modules together")
+Person(SWIntegrator, "Software Integrator",  "Integrates provided SW from IP providers together")
+
+ System_Boundary(EDAAlias, "Device EDA Environment", "A set of tools to design, generate RTL, and develop tests for IP and devices."){
+     ContainerDb_Ext(PDATAlias, "Provider Repository", "Zip File", "Stores of RTL/PDL/ICL code")
+     Container(EDATool, "Device EDA Tooling", "Tooling", "ATPG Generation Tooling")
+     Container(SIMTool, "Device SIM Tooling", "Tooling", "Design Simulation, Synthesis, and Place & Route Tooling")
+     Container(DEVTool, "Device ECAD Tooling", "Tooling", "Design CAD and Layout Tooling")
+     ContainerDb(CADRepo, "CAD Repository", "Storage", "Persistent storage for CAD data")
+ }
+System_Ext(ATEAlias, "Device Automated Test Equipment (ATE)", "An automated system for applying tests through a fixture to a DUT to perform test, validation, and diagnosis")
+SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")
+
+Rel_D(DTEAlias, EDATool, "ATPG Generation", "Test Development")
+Rel_D(DTEAlias, ATEAlias, "Produces Tests For", "Test Deployment")
+Rel_R(EDATool, ATEAlias, "Produces Tests For", "Test Deployment")
+Rel(IPProvidersAlias, PDATAlias, "Creates input data for", "Design")
+Rel_D(DSAAlias, DEVTool, "Organizes device architecture", "Design")
+Rel(EDATool, DevDbAlias,"Preserves ATPG tests", "Test Deployment")
+Rel_U(DevDbAlias, ATEAlias, "Reuse of tests", "Test Deployment")
+Rel_U(DDESAlias, DEVTool, "Design and integrates logic and IP Blocks", "Design")
+Rel_U(DDESAlias, SIMTool, "Analize, debug, validate logic and IP Block designs", "Design")
+Rel(PDATAlias, EDATool, "Source for Instrument behavior and objectives", "Test Development")
+Rel(PDATAlias, DEVTool, "Source for Instrument design and operation", "Test Development")
+Rel(PDATAlias, SIMTool, "Source for Instrument behavior and objectives", "Test Development")
+Rel_D(DEVTool, CADRepo, "Stores CAD data", "Design")
+Rel_U(CADRepo, EDATool, "Provides CAD data for tool automation", "Test Development")
+Rel_D(Integrator, EDATool, "Assembles Modules", "Design")
+Rel_D(SWIntegrator, EDATool, "Compiles Software, Firmware, and configuration data from IP Providers for Modules", "Design")
+@enduml

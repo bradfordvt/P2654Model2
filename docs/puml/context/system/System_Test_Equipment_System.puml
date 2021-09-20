@@ -1,0 +1,29 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+left to right direction
+
+Person(STEAlias, "Test Engineer", "A System\nTest Engineer")
+Person(STOAlias, "Test Operator", "A System\nTest Operator")
+
+System_Boundary(SysLevel, "System Test Equipment", "Test equipment used to test and diagnose assembled systems"){
+    System(SJTAGAlias, "System JTAG Test Equipment (SJTAG)", "An automated system for applying 1149.1 tests and emulation through a covers-on interface to a SUT to perform test, validation, diagnosis, and software emulation")
+    System(SFCTAlias, "System Functional-Circuit Test Equipment (FCT)", "An automated system for applying functional tests through a fixture to a SUT to perform test, validation, and diagnosis")
+}
+System_Ext(SUTAlias, "System Under Test", "A system that contains P2654 compliant sub-systems and boards")
+SystemDb_Ext(SDbAlias, "System Test Repository", "A repository where tests are preserved for production")
+
+Rel(STOAlias, SJTAGAlias, "Volume Testing Boards", "Mfg Test")
+Rel(STOAlias, SFCTAlias, "Volume Testing Boards", "Mfg Test")
+Rel(STEAlias, SJTAGAlias, "Test Generation", "Test Development")
+Rel(STEAlias, SFCTAlias, "Test Generation", "Test Development")
+Rel_D(SJTAGAlias, SUTAlias, "Tests", "Mfg Test")
+Rel_D(SFCTAlias, SUTAlias, "Tests", "Mfg Test")
+Rel(SDbAlias, SJTAGAlias, "Reuse of tests", "Test Deployment")
+Rel(SDbAlias, SFCTAlias, "Reuse of tests", "Test Deployment")
+@enduml

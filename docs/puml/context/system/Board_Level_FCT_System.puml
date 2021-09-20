@@ -1,0 +1,49 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+left to right direction
+
+Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
+
+System_Boundary(BrdFCT, "Board Level FCT", "Takes CAD data and human assistance to generates reusable functional test programs"){
+    System(LabView, "Laboratory Virtual Instrument Engineering Workbench (LabVIEW) - Graphical Programming Tool for Functional Test", "Enable control and indications of various data acquisition, instruments, industrial automation, and DUTs for a Functional Test System into specific Test Steps")
+    System(KTVee, "Visual Engineering Environment (Keysight VEE) - Graphical Programming Tool for Functional Test", "A graphical dataflow programming software development environment from Keysight Technologies for automated test, measurement, data analysis and reporting")
+    System(MyOpenLab, "MyOpenLab - Open Source Graphical Programming Tool for Functional Test", "Enable control and indications of various instruments and DUTs for a Functional Test System into specific Test Steps")
+    System(CVI, "LabWindows/CVI (C for Virtual Instrumentation)","An ANSI C software development environment with a comprehensive set of programming tools for creating test and measurement applications")
+    System(IDE, "Integrated Development Environment (IDE for C, C++, C#, Java, Python, Tcl, etc.)","A development environment for creating test and measurement applications for embedded and adjunct environments")
+    System(DSLApp, "Domain Specific Language (DSL) Application", "An application to execute procedures written in a DSL for a specific domain to perform operations on the BUT")
+    ContainerDb(LocalStore, "Local Repository", "Test Deployment", "Storage for native tests")
+}
+ContainerDb_Ext(BCADRepo, "Board CAD Repository", "Tooling", "Persistent storage of CAD information")
+SystemDb_Ext(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
+SystemDb_Ext(ConstraintModelAlias, "Constraints Model Repository", "Definitions of constraints of signals required for tests run in-board or in-system environments")
+
+Rel(BTEAlias, LabView, "FCT Generation", "Test Development")
+Rel(BTEAlias, KTVee, "FCT Generation", "Test Development")
+Rel(BTEAlias, MyOpenLab, "FCT Generation", "Test Development")
+Rel(BTEAlias, CVI, "FCT Generation", "Test Development")
+Rel(BTEAlias, IDE, "FCT Generation", "Test Development")
+Rel(BTEAlias, DSLApp, "FCT Generation", "Test Development")
+Rel_D(LabView, LocalStore, "Stores Tests", "Test Deployment")
+Rel_D(KTVee, LocalStore, "Stores Tests", "Test Deployment")
+Rel_D(MyOpenLab, LocalStore, "Stores Tests", "Test Deployment")
+Rel_D(CVI, LocalStore, "Stores Tests", "Test Deployment")
+Rel_D(IDE, LocalStore, "Stores Tests", "Test Deployment")
+Rel_D(DSLApp, LocalStore, "Stores Tests", "Test Deployment")
+Rel_U(BCADRepo, LocalStore, "Provides CAD data for tool automation", "Test Development")
+Rel(LocalStore, DSLApp, "CAD Data", "Test Development")
+Rel(LocalStore, BDbAlias, "Test Steps", "Test Development")
+Rel(ConstraintModelAlias, DSLApp,  "Provides", "Test Generation")
+Rel_U(BDbAlias, LocalStore, "Provides Tests", "Test Deployment")
+Rel_U(LocalStore, LabView, "Provides Tests", "Test Deployment")
+Rel_U(LocalStore, KTVee, "Provides Tests", "Test Deployment")
+Rel_U(LocalStore, MyOpenLab, "Provides Tests", "Test Deployment")
+Rel_U(LocalStore, CVI, "Provides Tests", "Test Deployment")
+Rel_U(LocalStore, IDE, "Provides Tests", "Test Deployment")
+Rel_U(LocalStore, DSLApp, "Provides Tests", "Test Deployment")
+@enduml

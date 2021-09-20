@@ -1,0 +1,27 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+left to right direction
+
+Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
+Person(BTOAlias, "Test Operator", "A Board\nTest Operator")
+
+System_Ext(BUTAlias, "Board Under Test", "A board that contains P2654 compliant devices")
+System_Boundary(ICTAlias, "Board In-Circuit Test Equipment (ICT)", "An automated system for applying 1149.1 tests through a fixture to a BUT to perform test, validation, and diagnosis"){
+    System(ICTTester, "ICT Test System", "Takes native tests and applies them to BUT")
+    ContainerDb(ICTStore, "ICT Local Repository", "Test Deployment", "Storage for ICT native tests")
+}
+SystemDb_Ext(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
+
+Rel_R(BTEAlias, BUTAlias, "Test Generation", "Test Application")
+Rel_U(ICTTester, BUTAlias, "Tests", "Mfg Test")
+Rel(BDbAlias, ICTStore, "Provides native tests", "Test Deployment")
+Rel_U(BTOAlias, ICTTester, "Volume Testing Boards", "Mfg Test")
+Rel_L(ICTStore, ICTTester, "Provides", "Test Deployment")
+Lay_R(BDbAlias, ICTStore)
+@enduml

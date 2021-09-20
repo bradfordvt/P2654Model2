@@ -1,0 +1,58 @@
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/users.puml
+
+SHOW_PERSON_OUTLINE()
+left to right direction
+
+Person(STEAlias, "Test Engineer", "A System\nTest Engineer")
+Person(SSAAlias, "Architect", "System Architect")
+Person(SDESAlias, "Designer", "System Designer")
+Person(STOAlias, "Test Operator", "A System\nTest Operator")
+Person_Ext(SCustomerAlias, "Customers", "System Customers", $sprite="users")
+Person(SWDevAlias, "SW Developer", "A Software Developer responsible for in-system testing and/or operation")
+
+System_Boundary(SysLevel, "System Level Context", "System Domain Context"){
+    System(SysECAD, "System ECAD Tool", "Design CAD and Layout Tooling")
+    System(SysEDA, "System EDA Tooling", "A set of tools to design, generate firmware, and develop tests for systems")
+    SystemDb(SDbAlias, "System Test Repository", "A repository where tests are preserved for production and In-System")
+    SystemDb(SDbDataAlias, "System Programming Repository", "A repository of software, firmware, and configuration data for a system")
+    SystemDb(SDbDSLAlias, "System DSL Procedure Repository", "A repository of DSL procedures written by testers of the SUT")
+    ContainerDb(SCADRepo, "System CAD Repository", "Tooling", "Persistent storage of CAD information")
+    System(SysTEq, "System Test Equipment", "Test equipment used to test and diagnose assembled systems")
+    System(SysEmbed, "Embedded System Test Environment", "The OA&M portion of the application used to configure, test, and operate the systems")
+}
+SystemDb_Ext(ConstraintModelAlias, "Constraints Model Repository", "Definitions of constraints of signals required for tests run in-system environments")
+System_Ext(BUTAlias, "Board Under Test", "A board that contains P2654 compliant devices")
+System_Ext(SUTAlias, "System Under Test", "A system that contains P2654 compliant boards and/or sub-systems")
+System_Ext(DUTAlias, "Device Under Test", "A device that contains IEEE 1687 instrumentation")
+
+Rel(STEAlias, SysEDA, "Test Generation", "Test Development")
+Rel(ConstraintModelAlias, SysEDA,  "Provides", "Test Generation")
+Rel(SCADRepo, SysEDA, "Provides", "Test Generation")
+Rel(SysECAD, SCADRepo, "Stores CAD data", "Design")
+Rel(SysEDA, SDbAlias, "Stores Tests", "Test Deployment")
+Rel(SDbDataAlias, SysEDA, "Provides Content", "Test Generation")
+Rel(SDbDSLAlias, SysEDA, "Provides Content", "Test Generation")
+Rel_L(STOAlias, SysTEq, "Volume Testing Boards", "Mfg Test")
+Rel(SSAAlias, SysECAD, "Organizes board architecture", "Design")
+Rel(SDESAlias, SysECAD, "Defines implementation of", "Design")
+Rel(SDESAlias, SysECAD, "Defines preferred BOM", "Design")
+Rel(SysEDA, SysTEq, "Produces Tests For", "Test Deployment")
+Rel(SDbAlias, SysTEq, "Reuse of tests", "Test Deployment")
+Rel_D(SysTEq, SUTAlias, "Tests", "Mfg Test")
+Rel(SysTEq, SDbAlias, "Stores native tests", "Test Development")
+Rel(SysEDA, SysEmbed, "Produces Tests For", "Run-time")
+Rel(STEAlias, SysTEq, "Produces Tests For", "Test Deployment")
+Rel(STEAlias, SysEmbed, "Reuse of tests", "Run-time")
+Rel_U(SUTAlias, BUTAlias, "Contains", "In-System Test")
+Rel_L(BUTAlias, DUTAlias, "Contains", "In-System Test")
+Rel_R(SCustomerAlias, SUTAlias, "Purchase Boards", "Sales")
+Rel(SWDevAlias, SysEmbed, "Integrates embedded tests for Systems", "Mfg Test")
+'Lay_U(SysEmbed, SWDevAlias)
+'Lay_D(SysEDA, SDbAlias)
+'Lay_L(SUTAlias, STOAlias)
+@enduml
