@@ -6,36 +6,38 @@
 !include FONTAWESOME/users.puml
 
 SHOW_PERSON_OUTLINE()
+left to right direction
 
 Person(DTEAlias, "Test Engineer", "A Device\nTest Engineer")
-Person(DSAAlias, "Architect", "Device/SoC Architect")
-Person_Ext(IPProvidersAlias, "Providers", "IP Providers", $sprite="users")
-Person(DDESAlias, "Designer", "Device Designer")
-Person(Integrator, "IP Integrator",  "Integrates IP modules together")
-Person(SWIntegrator, "Software Integrator",  "Integrates provided SW from IP providers together")
+Person(SWDevAlias, "SW Developer", "A Software Developer responsible for developing or integrating instrumentation PDL procedures and scripts")
+Person(DDESAlias, "Designer", "ASIC/FPGA Designer")
+Person(SchemLayoutExpert, "Specialist", "Schematic Layout Expert")
 
- System_Boundary(EDAAlias, "Device EDA Tooling", "A set of tools to design, generate RTL, and develop tests for IP and devices."){
-     ContainerDb_Ext(PDATAlias, "Provider Repository", "Zip File", "Stores of RTL/PDL/ICL code")
-     Container(EDATool, "Device EDA Tool", "Tooling", "ATPG Generation Tooling")
-     Container(SIMTool, "Device SIM Tool", "Tooling", "VHDL/Verilog Simulation Tooling")
-     Container(DEVTool, "Device ECAD Tool", "Tooling", "Design CAD and Layout Tooling")
-     ContainerDb(CADRepo, "CAD Repository", "Storage", "Persistent storage for CAD data")
- }
-System_Ext(ATEAlias, "Device Automated Test Equipment (ATE)", "An automated system for applying tests through a fixture to a DUT to perform test, validation, and diagnosis")
+System_Boundary(DEDAAlias, "Device EDA Tooling", "A set of tools to design, generate firmware, and develop tests for devices."){
+    System(DTest, "Device Level Test Generation", "Implements test/programming/configuration objectives")
+    System(Synthesis, "Synthesis Tool", "Gate-level synthesis tool with formal verification and scan insertion")
+    System(PlaceAndRoute, "Place & Route Tool", "The gate-level netlist from the synthesis tool is taken and imported into place and route tool in Verilog netlist format. All the gates and flip-flops are placed; clock tree synthesis and reset is routed. After this each block is routed.")
+    ContainerDb(DCADRepo, "Device CAD Repository", "Tooling", "Persistent storage of CAD information")
+    ContainerDb(LocalRepo, "Device Local Repository", "Storage", "Local persistent storage")
+}
+System_Ext(DevTest, "Device Test Equipment", "An automated system for applying tests through a fixture to a DUT to perform test, validation, and diagnosis")
 SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")
 
-Rel_D(DTEAlias, EDATool, "ATPG Generation", "Test Development")
-Rel_D(DTEAlias, ATEAlias, "Produces Tests For", "Test Deployment")
-Rel_R(EDATool, ATEAlias, "Produces Tests For", "Test Deployment")
-Rel(IPProvidersAlias, PDATAlias, "Creates input data for", "Design")
-Rel_U(DSAAlias, DEVTool, "Organizes device architecture", "Design")
-Rel(EDATool, DevDbAlias,"Preserves ATPG tests", "Test Deployment")
-Rel_U(DevDbAlias, ATEAlias, "Reuse of tests", "Test Deployment")
-Rel_U(DDESAlias, DEVTool, "Design and integrates logic and IP Blocks", "Design")
-Rel_U(DDESAlias, SIMTool, "Analize, debug, validate logic and IP Block designs", "Design")
-Rel(PDATAlias, EDATool, "Source for Instrument behavior and objectives", "Test Development")
-Rel(PDATAlias, DEVTool, "Source for Instrument design and operation", "Test Development")
-Rel(PDATAlias, SIMTool, "Source for Instrument behavior and objectives", "Test Development")
-Rel_D(DEVTool, CADRepo, "Stores CAD data", "Design")
-Rel_U(CADRepo, EDATool, "Provides CAD data for tool automation", "Test Development")
+Rel(DDESAlias, Synthesis, "Creates gate-level implementation for target technology", "Design")
+Rel(DDESAlias, PlaceAndRoute, "Creates initial layout", "Design")
+Rel(SchemLayoutExpert, PlaceAndRoute, "Refines layout", "Design")
+
+Rel(SWDevAlias, DTest, "Device Test Generation", "Test Development")
+Rel(DTEAlias, DTest, "Device Test Generation", "Test Development")
+Rel(DTEAlias, DevTest, "Produces Tests For", "Test Deployment")
+Rel(DTest, DevTest, "Produces Tests For", "Test Deployment")
+Rel(DTest, LocalRepo,"Preserves tests", "Test Deployment")
+Rel(LocalRepo, DevDbAlias,"Preserves tests", "Test Deployment")
+Rel(DevDbAlias, DevTest, "Reuse of tests", "Test Deployment")
+Rel(DevDbAlias, LocalRepo, "Provides Device Tests", "Design, Production")
+Rel(LocalRepo, DTest, "Provides Device Tests", "Design, Production")
+Rel(DevTest, DevDbAlias, "Stores native tests", "Test Deployment")
+Rel(DevDbAlias, LocalRepo, "Provides Test Benches", "Design")
+Rel(LocalRepo, DevDbAlias, "Stores Test Bench Results", "Design")
+Rel(DCADRepo, DTest, "Provides CAD data for tool automation", "Test Development")
 @enduml

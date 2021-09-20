@@ -17,7 +17,7 @@ Person(Integrator, "IP Integrator",  "Integrates IP modules together")
 Person(SWIntegrator, "Software Integrator",  "Integrates provided SW from IP providers together")
 
 System(DUTAlias, "Device Under Test", "A device that contains IEEE 1687 instrumentation")
-System(EDAAlias, "Device EDA Tooling", "A set of tools to design, generate RTL, and develop tests for IP and devices.")
+System(EDAAlias, "Device EDA Environment", "A set of tools to design, generate RTL, and develop tests for IP and devices.")
 System(ATEAlias, "Device Automated Test Equipment (ATE)", "An automated system for applying tests through a fixture to a DUT to perform test, validation, and diagnosis")
 System_Ext(BUTAlias, "Board Under Test", "A board that contains P2654 compliant devices")
 SystemDb_Ext(DevDbAlias, "Device Test Repository", "A repository where tests are preserved for production")

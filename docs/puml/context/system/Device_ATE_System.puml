@@ -11,7 +11,7 @@ Person(DTEAlias, "Test Engineer", "A Device\nTest Engineer")
 Person(DTOAlias, "Test Operator", "A Device\nTest Operator")
 
 System_Ext(DUTAlias, "Device Under Test", "A device that contains IEEE 1687 instrumentation")
-System_Ext(EDAAlias, "Device EDA Tooling", "A set of tools to design, generate RTL, and develop tests for IP and devices.")
+System_Ext(EDAAlias, "Device EDA Environment", "A set of tools to design, generate RTL, and develop tests for IP and devices.")
 System_Boundary(ATEAlias, "Device Automated Test Equipment (ATE)", "An automated system for applying tests through a fixture to a DUT to perform test, validation, and diagnosis"){
     System(ATEGen, "Test Generator for ATE", "Takes STIL and other test formats and generates native test programs")
     System(ATETester, "ATE Test System", "Takes native tests and applies them to DUT")

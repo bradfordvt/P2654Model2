@@ -6,37 +6,22 @@
 !include FONTAWESOME/users.puml
 
 SHOW_PERSON_OUTLINE()
+left to right direction
 
 Person(BTEAlias, "Test Engineer", "A Board\nTest Engineer")
 Person(BTOAlias, "Test Operator", "A Board\nTest Operator")
 
 System_Ext(BUTAlias, "Board Under Test", "A board that contains P2654 compliant devices")
-System_Ext(BEDAAlias, "Board EDA Tooling", "A set of tools to design, generate firmware, and develop tests for boards.")
 System_Boundary(JTAGAlias, "Board JTAG Test Equipment (BSCAN)", "An automated system for applying 1149.1 tests through a fixture to a BUT to perform test, validation, and diagnosis"){
-    System(JTAGATPGGen, "ATPG Test Generator for Static Tests", "Takes CAD data and generates reusable native test programs")
-    System(JTAGProgGen, "Persistent Memory Programming Generator", "Takes CAD data, memory model, and data to generate reusable native programming objectives")
-    System(JTAGMemTestGen, "Memory Test Generator", "Takes CAD data and memory model to generate reusable native structural tests")
     System(JTAGTester, "JTAG Test System", "Takes native tests and applies them to BUT")
     ContainerDb(JTAGStore, "JTAG Local Repository", "Test Deployment", "Storage for JTAG native tests")
 }
 SystemDb_Ext(BDbAlias, "Board Test Repository", "A repository where tests are preserved for production")
-SystemDb_Ext(BDbDataAlias, "Board Programming Repository", "A repository of software, firmware, and configuration data for a board")
-SystemDb_Ext(BDbMemAlias, "Board Memory Model Repository", "A repository of memory access algorithms for memory devices")
 
-Rel(BTEAlias, BUTAlias, "Test Generation", "Test Application")
-Rel(BTEAlias, BEDAAlias, "ATPG Generation", "Test Development")
-Rel_D(BTEAlias, JTAGATPGGen, "Produces Tests For", "Test Deployment")
-Rel_L(BEDAAlias, JTAGATPGGen, "Produces Tests For", "Test Deployment")
-Rel_R(JTAGTester, BUTAlias, "Tests", "Mfg Test")
-Rel_D(BEDAAlias, BDbAlias,"Preserves ATPG tests", "Test Deployment")
-Rel_U(BDbAlias, JTAGATPGGen, "Reuse of tests", "Test Deployment")
-Rel_R(JTAGStore, BDbAlias, "Stores native tests", "Test Deployment")
+Rel_R(BTEAlias, BUTAlias, "Test Generation", "Test Application")
+Rel_U(JTAGTester, BUTAlias, "Tests", "Mfg Test")
+Rel(BDbAlias, JTAGStore, "Provides native tests", "Test Deployment")
 Rel_U(BTOAlias, JTAGTester, "Volume Testing Boards", "Mfg Test")
-Rel_D(JTAGATPGGen, JTAGStore, "Stores native tests", "Test Deployment")
-Rel_D(JTAGProgGen, JTAGStore, "Stores native tests", "Test Deployment")
-Rel(JTAGStore, JTAGTester, "Provides", "Test Deployment")
-Rel_D(BDbDataAlias, JTAGProgGen, "Provides", "Test Deployment")
-Rel_L(BDbMemAlias, JTAGMemTestGen, "Provides", "Test Generation")
-Rel_L(JTAGMemTestGen, JTAGStore, "Stores native tests", "Test Deployment")
-Lay_R(BTOAlias, ICTAlias)
+Rel_L(JTAGStore, JTAGTester, "Provides", "Test Deployment")
+Lay_R(BDbAlias, JTAGStore)
 @enduml
